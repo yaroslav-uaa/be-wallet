@@ -3,6 +3,7 @@ const logger = require('morgan')
 const cors = require('cors')
 
 const transactionsRouter = require('./routes/api/transactions')
+const usersRouter = require('./routes/api/users/index')
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/transactions', transactionsRouter)
+app.use('/api/users', usersRouter)
 
 //! control error
 app.use((req, res) => {
