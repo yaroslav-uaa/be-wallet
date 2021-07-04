@@ -22,7 +22,7 @@ const removeTransaction = async (transactionId) => {
   return result
 }
 
-const updateContact = async (transactionId, body) => {
+const updateTransaction = async (transactionId, body) => {
   const result = await Transaction.findOneAndUpdate(
     { _id: transactionId },
     { ...body },
@@ -36,5 +36,5 @@ module.exports = {
   addTransaction,
   getTransactionById,
   removeTransaction,
-  updateContact,
+  updateTransaction,
 }

@@ -16,11 +16,11 @@ const transacSchema = new Schema(
       type: String,
     },
     sum: {
-      type: String,
+      type: Number,
     },
     owner: {
       type: String,
-      default: ['Guest'],
+      default: ['User'],
     },
   },
   {
