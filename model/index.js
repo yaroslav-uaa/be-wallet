@@ -1,3 +1,4 @@
+const { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } = require('constants')
 const fs = require('fs/promises')
 const path = require('path')
 const { v4: id } = require('uuid')
@@ -15,7 +16,7 @@ const listTransaction = async () => {
 
 const getTransactionById = async (transactionId) => {
   const transaсtions = await readTransaction()
-  transaсtions.find((el) => String(transactionId) === String(el.id))
+  return transaсtions.find((el) => String(transactionId) === String(el.id))
 }
 
 const removeTransaction = async (transactionId) => {
