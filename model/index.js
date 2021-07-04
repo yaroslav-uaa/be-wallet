@@ -1,4 +1,3 @@
-const { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } = require('constants')
 const fs = require('fs/promises')
 const path = require('path')
 const { v4: id } = require('uuid')
