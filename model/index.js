@@ -37,6 +37,7 @@ const removeTransaction = async (transactionId) => {
 const addTransaction = async (body) => {
   const newTransaction = {
     id: id(),
+    // TODO: add data?,
     ...body,
   }
   const transaсtions = await readTransaction()

@@ -26,7 +26,14 @@ router.get('/:transactionId', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
+  try {
+    const transaction = await Transactions.addTransaction(req.body)
+    return res
+      .status(201)
+      .json({ status: 'success', code: 201, data: { transaction } })
+  } catch (e) {
+    next(e)
+  }
 })
 
 router.delete('/:transactionId', async (req, res, next) => {
