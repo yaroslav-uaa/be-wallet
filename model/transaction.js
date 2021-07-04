@@ -40,7 +40,7 @@ const transacSchema = new Schema(
 const Transaction = model('transaction', transacSchema)
 
 transacSchema.virtual('info').get(function () {
-  return `This is transaction ${this.name}`
+  return `This is transaction ${this.owner}`
 })
 
 module.exports = Transaction

@@ -11,10 +11,10 @@ const getAll = async (_req, res, next) => {
 
 const addTransaction = async (req, res, next) => {
   try {
-    const contact = await Transaction.addTransaction(req.body)
+    const transaction = await Transaction.addTransaction(req.body)
     return res
       .status(201)
-      .json({ status: 'success', code: 201, data: { contact } })
+      .json({ status: 'success', code: 201, data: { transaction } })
   } catch (e) {
     next(e)
   }
