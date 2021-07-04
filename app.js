@@ -14,12 +14,18 @@ app.use(express.json())
 
 app.use('/api/transactions', transactionsRouter)
 
+//! control error
 app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' })
+  res.status(404).json({ status: 'error', code: 404, message: 'Not found' })
 })
-
+//! uncontrol error
 app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message })
+  const status = err.status || 500
+  res.status(status).json({
+    status: status === 500 ? 'fail' : 'error',
+    code: status,
+    message: err.message,
+  })
 })
 
 module.exports = app
