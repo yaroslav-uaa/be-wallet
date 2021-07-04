@@ -33,9 +33,30 @@ const removeTransaction = async (transactionId) => {
   return null
 }
 
-const addTransaction = async (body) => {}
+const addTransaction = async (body) => {
+  const newTransaction = {
+    id: id(),
+    ...body,
+  }
+  const transaсtions = await readTransaction()
+  transaсtions.push(newTransaction)
+  await fs.writeFile(transacPath, JSON.stringify(transaсtions))
+  return newTransaction
+}
 
-const updateTransaction = async (transactionId, body) => {}
+const updateTransaction = async (transactionId, body) => {
+  const transaсtions = await readTransaction()
+  const [result] = transaсtions.filter(
+    (el) => String(transactionId) === String(el.id)
+  )
+
+  if (result) {
+    Object.assign(result, body)
+    await fs.writeFile(transacPath, JSON.stringify(transaсtions))
+  }
+
+  return result
+}
 
 module.exports = {
   listTransaction,
