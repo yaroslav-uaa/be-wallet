@@ -13,12 +13,25 @@ const listTransaction = async () => {
   return await readTransaction()
 }
 
-const getTransactionsById = async (transactionId) => {
+const getTransactionById = async (transactionId) => {
   const transaсtions = await readTransaction()
   transaсtions.find((el) => String(transactionId) === String(el.id))
 }
 
-const removeTransaction = async (transactionId) => {}
+const removeTransaction = async (transactionId) => {
+  const transaсtions = await readTransaction()
+  const deletedTransaction = transaсtions.find(
+    (el) => String(transactionId) === String(el.id)
+  )
+  if (deletedTransaction) {
+    const index = transaсtions.indexOf(deletedTransaction)
+    transaсtions.splice(index, 1)
+
+    await fs.writeFile(transacPath, JSON.stringify(transaсtions))
+    return deletedTransaction
+  }
+  return null
+}
 
 const addTransaction = async (body) => {}
 
@@ -26,7 +39,7 @@ const updateTransaction = async (transactionId, body) => {}
 
 module.exports = {
   listTransaction,
-  getTransactionsById,
+  getTransactionById,
   removeTransaction,
   addTransaction,
   updateTransaction,
