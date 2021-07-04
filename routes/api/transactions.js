@@ -37,7 +37,22 @@ router.post('/', async (req, res, next) => {
 })
 
 router.delete('/:transactionId', async (req, res, next) => {
-  res.json({ message: 'template message' })
+  try {
+    const result = await Transactions.removeTransaction(
+      req.params.transactionId
+    )
+    if (result) {
+      return res.json({
+        status: 'success',
+        code: 200,
+        message: 'Transaction deleted',
+        data: { result },
+      })
+    }
+    return res.json({ status: 'error', code: 404, message: 'Not found' })
+  } catch (e) {
+    next(e)
+  }
 })
 
 router.patch('/:transactionId', async (req, res, next) => {
