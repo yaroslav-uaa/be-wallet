@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const controllers = require('../../controllers/transactions')
+const controllers = require('../../../controllers/transactions')
 
 router.get('/', controllers.getAll).post('/', controllers.addTransaction)
 
