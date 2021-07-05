@@ -1,13 +1,25 @@
 const express = require('express')
 const router = express.Router()
 const controllers = require('../../../controllers/transactions')
+const {
+  validationCreateTransaction,
+  validationUpdateTransaction,
+  validateMongoId,
+} = require('./validation')
 
-router.get('/', controllers.getAll).post('/', controllers.addTransaction)
+router
+  .get('/', controllers.getAll)
+  .post('/', validationCreateTransaction, controllers.addTransaction)
 
 router
   .get('/:transactionId', controllers.getTransactionById)
   .delete('/:transactionId', controllers.removeTransaction)
-  .put('/:transactionId', controllers.updateTransaction)
+  .put(
+    '/:transactionId',
+    validationUpdateTransaction,
+    validateMongoId,
+    controllers.updateTransaction
+  )
 
 // TODO: add PATCH request
 

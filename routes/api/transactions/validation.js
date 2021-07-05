@@ -7,6 +7,7 @@ const schemaCreateTransaction = Joi.object({
   income: Joi.boolean().required(),
   comment: Joi.string().optional(),
   sum: Joi.number().min(0).integer().required(),
+  owner: Joi.string().required(),
 })
 
 const schemaUpdateTransaction = Joi.object({
@@ -15,7 +16,8 @@ const schemaUpdateTransaction = Joi.object({
   income: Joi.boolean().optional(),
   comment: Joi.string().optional(),
   sum: Joi.number().min(0).integer().optional(),
-}).or('date', 'category', 'income', 'comment', 'sum')
+  owner: Joi.string().required(),
+}).or('date', 'category', 'income', 'comment', 'sum', 'owner')
 
 const validate = async (schema, obj, next) => {
   try {
@@ -35,5 +37,11 @@ module.exports = {
   },
   validationUpdateTransaction: (req, res, next) => {
     return validate(schemaUpdateTransaction, req.body, next)
+  },
+  validateMongoId: (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.transactionId)) {
+      return next({ status: 400, message: 'Invalid ObjectId' })
+    }
+    next()
   },
 }
