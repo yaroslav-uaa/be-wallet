@@ -14,8 +14,6 @@ const getCategories = async (month, year) => {
   const consumptionTransactions = transactions.filter((el) => !el.income)
   const groupedTransactions = groupBy(consumptionTransactions, 'category')
 
-  console.log(Object.keys(groupedTransactions))
-
   const categories = Object.keys(groupedTransactions).map((element) => {
     return {
       category: element,
@@ -75,7 +73,6 @@ const calculateConsumption = (transactions) => {
     (total, el) => (total += el.sum),
     0
   )
-  console.log(consumption)
   return consumption
 }
 
