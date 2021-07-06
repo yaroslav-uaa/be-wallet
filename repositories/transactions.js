@@ -1,30 +1,38 @@
 const Transaction = require('../model/transaction')
 
-const listTransaction = async () => {
-  const results = await Transaction.find()
+const listTransaction = async (userId) => {
+  const results = await Transaction.findOne({ owner: userId }).populate({
+    path: 'owner',
+    select: 'email -_id',
+  })
   return results
 }
 
-const addTransaction = async (body) => {
-  const newTransaction = await Transaction.create(body)
-  return newTransaction
+const addTransaction = async (userId, body) => {
+  console.log(userId)
+  const results = await Transaction.create({ owner: userId, ...body })
+  return results
 }
 
-const getTransactionById = async (transactionId) => {
-  const result = await Transaction.findOne({ _id: transactionId })
-  return result
-}
-
-const removeTransaction = async (transactionId) => {
-  const result = await Transaction.findOneAndRemove({
+const getTransactionById = async (userId, transactionId) => {
+  const result = await Transaction.findOne({
     _id: transactionId,
+    owner: userId,
   })
   return result
 }
 
-const updateTransaction = async (transactionId, body) => {
+const removeTransaction = async (userId, transactionId) => {
+  const result = await Transaction.findOneAndDelete({
+    _id: transactionId,
+    owner: userId,
+  })
+  return result
+}
+
+const updateTransaction = async (userId, transactionId, body) => {
   const result = await Transaction.findOneAndUpdate(
-    { _id: transactionId },
+    { _id: transactionId, owner: userId },
     { ...body },
     { new: true }
   )

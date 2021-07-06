@@ -1,8 +1,10 @@
 const Transaction = require('../repositories/transactions')
 
-const getAll = async (_req, res, next) => {
+const getAll = async (req, res, next) => {
   try {
-    const result = await Transaction.listTransaction()
+    const id = req.user.id
+    console.log(req.user)
+    const result = await Transaction.listTransaction(id)
     return res.json({ status: 'success', code: 200, data: { result } })
   } catch (e) {
     next(e)
@@ -11,7 +13,9 @@ const getAll = async (_req, res, next) => {
 
 const addTransaction = async (req, res, next) => {
   try {
-    const transaction = await Transaction.addTransaction(req.body)
+    const userId = req.user.id
+    console.log(userId)
+    const transaction = await Transaction.addTransaction(userId, req.body)
     return res
       .status(201)
       .json({ status: 'success', code: 201, data: { transaction } })
@@ -22,7 +26,11 @@ const addTransaction = async (req, res, next) => {
 
 const removeTransaction = async (req, res, next) => {
   try {
-    const result = await Transaction.removeTransaction(req.params.transactionId)
+    const userId = req.user.id
+    const result = await Transaction.removeTransaction(
+      userId,
+      req.params.transactionId
+    )
     if (result) {
       return res.json({
         status: 'success',
@@ -39,7 +47,9 @@ const removeTransaction = async (req, res, next) => {
 
 const getTransactionById = async (req, res, next) => {
   try {
+    const userId = req.user.id
     const result = await Transaction.getTransactionById(
+      userId,
       req.params.transactionId
     )
     if (result) {
@@ -54,7 +64,9 @@ const getTransactionById = async (req, res, next) => {
 
 const updateTransaction = async (req, res, next) => {
   try {
+    const userId = req.user.id
     const result = await Transaction.updateTransaction(
+      userId,
       req.params.transactionId,
       req.body
     )

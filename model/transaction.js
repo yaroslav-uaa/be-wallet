@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, SchemaTypes } = require('mongoose')
 
 const transacSchema = new Schema(
   {
@@ -19,8 +19,8 @@ const transacSchema = new Schema(
       type: Number,
     },
     owner: {
-      type: String,
-      default: ['User'],
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
     },
   },
   {
@@ -33,7 +33,7 @@ const transacSchema = new Schema(
         return ret
       },
     },
-    toObject: { virtuals: true },
+    // toObject: { virtuals: true },
   }
 )
 

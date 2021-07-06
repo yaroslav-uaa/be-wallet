@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controllers = require('../../../controllers/transactions')
-
+const guard = require('../../../helpers/guard')
 const {
   validationCreateTransaction,
   validationUpdateTransaction,
@@ -9,14 +9,15 @@ const {
 } = require('./validation')
 
 router
-  .get('/', controllers.getAll)
-  .post('/', validationCreateTransaction, controllers.addTransaction)
+  .get('/', guard, controllers.getAll)
+  .post('/', guard, validationCreateTransaction, controllers.addTransaction)
 
 router
-  .get('/:transactionId', controllers.getTransactionById)
-  .delete('/:transactionId', controllers.removeTransaction)
+  .get('/:transactionId', guard, controllers.getTransactionById)
+  .delete('/:transactionId', guard, controllers.removeTransaction)
   .put(
     '/:transactionId',
+    guard,
     validationUpdateTransaction,
     validateMongoId,
     controllers.updateTransaction
