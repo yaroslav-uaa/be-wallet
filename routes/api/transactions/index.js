@@ -23,6 +23,4 @@ router
     controllers.updateTransaction
   )
 
-// TODO: add PATCH request
-
 module.exports = router
