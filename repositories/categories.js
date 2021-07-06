@@ -11,7 +11,19 @@ const getCategories = async (month, year) => {
   const income = calculateIncome(transactions)
   const consumption = calculateConsumption(transactions)
 
+  const consumptionTransactions = transactions.filter((el) => !el.income)
+  const groupedTransactions = groupBy(consumptionTransactions, 'category')
+
+  console.log(Object.keys(groupedTransactions))
+
+  const categories = Object.keys(groupedTransactions).map((element) => {
+    return {
+      category: element,
+      sum: calculateSumByCategory(groupedTransactions[element]),
+    }
+  })
   return {
+    categories: categories,
     income: income,
     consumption: consumption,
     balance: income - consumption,
@@ -27,6 +39,22 @@ const configureEndDate = (month, year) => {
   } else {
     return `${year}-${parseInt(month) + 1}-01`
   }
+}
+
+// ****функция для: ГРУППИРОВКИ
+const groupBy = function (xs, key) {
+  return xs.reduce(function (rv, x) {
+    ;(rv[x[key]] = rv[x[key]] || []).push(x)
+    return rv
+  }, {})
+}
+
+// ****функция для расчета: суммы КАТЕГОРИИ
+const calculateSumByCategory = (transactions) => {
+  return transactions.reduce(
+    (total, element) => (total += parseInt(element.sum)),
+    0
+  )
 }
 
 // ****функция для расчета: ДОХОДА
