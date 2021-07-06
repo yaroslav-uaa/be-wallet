@@ -17,13 +17,13 @@ const signUpUser = async (req, res, next) => {
       })
     }
 
-    const { name, id, email } = await Users.createUser(req.body)
+    const { id, email, name } = await Users.createUser(req.body)
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
       message: 'You registered successfully',
-      user: { name, id, email },
+      user: { id, name, email },
     })
   } catch (e) {
     next(e)
@@ -46,7 +46,6 @@ const signIn = async (req, res, next) => {
     await Users.updateTokenUser(id, token)
 
     const { name, email } = user
-    console.log(user)
     return res.json({
       status: 'success',
       code: HttpCode.OK,

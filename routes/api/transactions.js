@@ -1,13 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const controllers = require('../../controllers/transactions')
-
-router.get('/', controllers.getAll).post('/', controllers.addTransaction)
+const guard = require('../../helpers/guard')
 
 router
-  .get('/:transactionId', controllers.getTransactionById)
-  .delete('/:transactionId', controllers.removeTransaction)
-  .put('/:transactionId', controllers.updateTransaction)
+  .get('/', guard, controllers.getAll)
+  .post('/', guard, controllers.addTransaction)
+
+router
+  .get('/:transactionId', guard, controllers.getTransactionById)
+  .delete('/:transactionId', guard, controllers.removeTransaction)
+  .put('/:transactionId', guard, controllers.updateTransaction)
 
 // TODO: add PATCH request
 
