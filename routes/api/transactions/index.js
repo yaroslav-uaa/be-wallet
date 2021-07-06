@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const controllers = require('../../../controllers/transactions')
+
 const {
   validationCreateTransaction,
   validationUpdateTransaction,
@@ -20,7 +21,5 @@ router
     validateMongoId,
     controllers.updateTransaction
   )
-
-// TODO: add PATCH request
 
 module.exports = router
