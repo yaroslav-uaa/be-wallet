@@ -9,7 +9,6 @@ const listTransaction = async (userId) => {
 }
 
 const addTransaction = async (userId, body) => {
-  console.log(userId)
   const results = await Transaction.create({ owner: userId, ...body })
   return results
 }

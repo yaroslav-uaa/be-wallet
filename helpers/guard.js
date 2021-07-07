@@ -21,6 +21,5 @@ const guard = (req, res, next) => {
     req.user = user
     return next()
   })(req, res, next)
-  console.log(req)
 }
 module.exports = guard
