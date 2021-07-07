@@ -1,6 +1,7 @@
 const Users = require('../repositories/users')
 const HttpCode = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
+const fs = require('fs/promises')
 const EmailService = require('../services/mail-generator')
 const CreateSenderNodemailer = require('../services/email-sender')
 
@@ -21,7 +22,9 @@ const signUpUser = async (req, res, next) => {
       })
     }
 
-    const { id, email, name, verifyToken } = await Users.createUser(req.body)
+    const { id, email, name, verifyToken, avatar } = await Users.createUser(
+      req.body
+    )
     try {
       const emailService = new EmailService(
         process.env.NODE_ENV,
@@ -179,4 +182,5 @@ module.exports = {
   currentUser,
   verifyUser,
   repeatVerification,
+  avatars,
 }

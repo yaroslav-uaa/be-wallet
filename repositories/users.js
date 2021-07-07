@@ -34,4 +34,5 @@ module.exports = {
   createUser,
   updateTokenUser,
   updateVerifyToken,
+  updateAvatar,
 }
