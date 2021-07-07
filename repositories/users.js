@@ -23,6 +23,10 @@ const updateVerifyToken = async (id, isVerified, verifyToken) => {
   return await User.updateOne({ _id: id }, { isVerified, verifyToken })
 }
 
+const updateAvatar = async (id, avatar, idCloudAvatar = null) => {
+  return await User.updateOne({ _id: id }, { avatar, idCloudAvatar })
+}
+
 module.exports = {
   findUserById,
   findUserByEmail,

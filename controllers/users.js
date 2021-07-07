@@ -6,6 +6,7 @@ const CreateSenderNodemailer = require('../services/email-sender')
 
 require('dotenv').config()
 
+const UploadAvatarService = require('../services/cloud-upload')
 const SECRET_KEY = process.env.SECRET_KEY
 
 const signUpUser = async (req, res, next) => {
@@ -34,7 +35,7 @@ const signUpUser = async (req, res, next) => {
       status: 'success',
       code: HttpCode.CREATED,
       message: 'You registered successfully',
-      user: { id, name, email },
+      user: { id, name, email, avatar },
     })
   } catch (e) {
     next(e)
@@ -148,6 +149,24 @@ const repeatVerification = async (req, res, next) => {
       code: HttpCode.NOT_FOUND,
       message: 'User not found',
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const avatars = async (req, res, next) => {
+  try {
+    const id = req.user.id
+    const uploads = new UploadAvatarService()
+    const { idCloudAvatar, avatarURL } = await uploads.saveAvatar(
+      req.file.path,
+      req.user.idCloudAvatar
+    )
+
+    await fs.unlink(req.file.path)
+
+    await Users.updateAvatar(id, avatarURL, idCloudAvatar)
+    res.json({ status: 'success', code: HttpCode.OK, data: { avatarURL } })
   } catch (error) {
     next(error)
   }

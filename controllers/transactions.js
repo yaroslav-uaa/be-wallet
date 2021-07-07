@@ -3,7 +3,6 @@ const Transaction = require('../repositories/transactions')
 const getAll = async (req, res, next) => {
   try {
     const id = req.user.id
-    console.log(req.user)
     const result = await Transaction.listTransaction(id)
     return res.json({ status: 'success', code: 200, data: { result } })
   } catch (e) {
@@ -14,7 +13,6 @@ const getAll = async (req, res, next) => {
 const addTransaction = async (req, res, next) => {
   try {
     const userId = req.user.id
-    console.log(userId)
     const transaction = await Transaction.addTransaction(userId, req.body)
     return res
       .status(201)
@@ -53,7 +51,6 @@ const getTransactionById = async (req, res, next) => {
       req.params.transactionId
     )
     if (result) {
-      console.log(result)
       return res.json({ status: 'success', code: 200, data: { result } })
     }
     return res.json({ status: 'error', code: 404, message: 'Not found' })

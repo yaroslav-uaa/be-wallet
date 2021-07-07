@@ -7,7 +7,7 @@ const schemaCreateTransaction = Joi.object({
   income: Joi.boolean().required(),
   comment: Joi.string().optional(),
   sum: Joi.number().min(0).integer().required(),
-  owner: Joi.string().required(),
+  owner: Joi.string().optional(),
 })
 
 const schemaUpdateTransaction = Joi.object({
@@ -16,7 +16,7 @@ const schemaUpdateTransaction = Joi.object({
   income: Joi.boolean().optional(),
   comment: Joi.string().optional(),
   sum: Joi.number().min(0).integer().optional(),
-  owner: Joi.string().required(),
+  owner: Joi.string().optional(),
 }).or('date', 'category', 'income', 'comment', 'sum', 'owner')
 
 const validate = async (schema, obj, next) => {
