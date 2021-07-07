@@ -1,10 +1,8 @@
 const Users = require('../repositories/users')
 const HttpCode = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
-const fs = require('fs/promises')
 require('dotenv').config()
 
-const UploadAvatarService = require('../services/cloud-upload')
 const SECRET_KEY = process.env.SECRET_KEY
 
 const signUpUser = async (req, res, next) => {
@@ -92,21 +90,7 @@ const currentUser = async (req, res, next) => {
 }
 
 const avatars = async (req, res, next) => {
-  try {
-    const id = req.user.id
-    const uploads = new UploadAvatarService()
-    const { idCloudAvatar, avatarURL } = await uploads.saveAvatar(
-      req.file.path,
-      req.user.idCloudAvatar
-    )
-
-    await fs.unlink(req.file.path)
-
-    await Users.updateAvatar(id, avatarURL, idCloudAvatar)
-    res.json({ status: 'success', code: HttpCode.OK, data: { avatarURL } })
-  } catch (error) {
-    next(error)
-  }
+  res.json({ message: 'avatar success' })
 }
 
 module.exports = {

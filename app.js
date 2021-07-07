@@ -1,20 +1,16 @@
 const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
-const path = require('path')
 
 const transactionsRouter = require('./routes/api/transactions/index')
 const categoriesRouter = require('./routes/api/transactions/categories')
 const usersRouter = require('./routes/api/users/index')
-require('dotenv').config()
-const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
 
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
 app.use(logger(formatsLogger))
-app.use(express.static(path.join(__dirname, AVATAR_OF_USERS)))
 app.use(cors())
 app.use(express.json())
 
