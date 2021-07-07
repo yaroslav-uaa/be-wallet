@@ -9,7 +9,7 @@ const getAll = async (req, res, next) => {
     next(e)
   }
 }
-
+// TODO: add calculate
 const addTransaction = async (req, res, next) => {
   try {
     const userId = req.user.id
