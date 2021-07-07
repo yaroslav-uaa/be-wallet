@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose')
+const { v4: uuid } = require('uuid')
 
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
@@ -21,12 +22,14 @@ const userSchema = new Schema(
       unique: true,
     },
     token: String,
-    avatar: {
-      type: String,
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
-    idCloudAvatar: {
+    verifyToken: {
       type: String,
-      default: null,
+      required: true,
+      default: uuid(),
     },
   },
   {
