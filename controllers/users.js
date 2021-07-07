@@ -17,13 +17,13 @@ const signUpUser = async (req, res, next) => {
       })
     }
 
-    const { id, email, name } = await Users.createUser(req.body)
+    const { id, email, name, avatar } = await Users.createUser(req.body)
 
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
       message: 'You registered successfully',
-      user: { id, name, email },
+      user: { id, name, email, avatar },
     })
   } catch (e) {
     next(e)
@@ -89,9 +89,14 @@ const currentUser = async (req, res, next) => {
   }
 }
 
+const avatars = async (req, res, next) => {
+  res.json({ message: 'avatar success' })
+}
+
 module.exports = {
   signUpUser,
   signIn,
   signOut,
   currentUser,
+  avatars,
 }
