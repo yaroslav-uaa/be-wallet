@@ -10,7 +10,16 @@ const listTransaction = async (userId) => {
     path: 'owner',
     select: 'email -_id',
   })
-  return results
+
+  return results.sort(function (a, b) {
+    if (a.date > b.date) {
+      return 1
+    }
+    if (a.date < b.date) {
+      return -1
+    }
+    return 0
+  })
 }
 
 const addTransaction = async (userId, body) => {
