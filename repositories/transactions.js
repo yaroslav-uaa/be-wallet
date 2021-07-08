@@ -1,7 +1,12 @@
 const Transaction = require('../model/transaction')
+const {
+  getLatestBalance,
+  calculateCurrentBalance,
+  recalculateBalance,
+} = require('../helpers/calculate-balance')
 
 const listTransaction = async (userId) => {
-  const results = await Transaction.findOne({ owner: userId }).populate({
+  const results = await Transaction.find({ owner: userId }).populate({
     path: 'owner',
     select: 'email -_id',
   })
@@ -9,7 +14,18 @@ const listTransaction = async (userId) => {
 }
 
 const addTransaction = async (userId, body) => {
-  const results = await Transaction.create({ owner: userId, ...body })
+  const lastTransactionBalance = await getLatestBalance(body.date, userId)
+  console.log(lastTransactionBalance)
+  const currentBalance = await calculateCurrentBalance(
+    lastTransactionBalance,
+    body
+  )
+  const results = await Transaction.create({
+    owner: userId,
+    ...body,
+    balance: currentBalance,
+  })
+  recalculateBalance(body.date, currentBalance, userId)
   return results
 }
 
