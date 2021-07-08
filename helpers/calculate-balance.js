@@ -1,5 +1,6 @@
 const Transaction = require('../model/transaction')
 
+//* *получение баланса с предыдущей для необходимой даты транзакции
 const getLatestBalance = async (date, userId) => {
   const lastTransaction = await Transaction.find({
     date: { $lte: date },
@@ -13,12 +14,14 @@ const getLatestBalance = async (date, userId) => {
   } else return lastTransaction[0].balance
 }
 
+//* *расчет баланса добавляемой транзакции
 const calculateCurrentBalance = async (balance, body) => {
   if (body.income) {
     return balance + body.sum
   } else return balance - body.sum
 }
 
+//* *перерасчет баланса последующих по дате за добавляемой транзакций
 const recalculateBalance = async (date, currentBalance, userId) => {
   let balance = currentBalance
   const transactions = await Transaction.find({
