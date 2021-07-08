@@ -17,6 +17,11 @@ const transacSchema = new Schema(
     },
     sum: {
       type: Number,
+      min: 0,
+    },
+    balance: {
+      type: Number,
+      min: 0,
     },
     owner: {
       type: SchemaTypes.ObjectId,
