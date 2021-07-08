@@ -1,5 +1,5 @@
 const Users = require('../repositories/users')
-const HttpCode = require('../helpers/constants')
+const { HttpCode } = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
 const fs = require('fs/promises')
 const EmailService = require('../services/mail-generator')
