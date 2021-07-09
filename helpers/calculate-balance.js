@@ -3,7 +3,7 @@ const Transaction = require('../model/transaction')
 //* *получение баланса с предыдущей для необходимой даты транзакции
 const getLatestBalance = async (date, userId) => {
   const lastTransaction = await Transaction.find({
-    date: { $lte: date },
+    date: { $lt: date },
     owner: userId,
   })
     .sort({ date: -1 })
@@ -15,7 +15,7 @@ const getLatestBalance = async (date, userId) => {
 }
 
 //* *расчет баланса добавляемой транзакции
-const calculateCurrentBalance = async (balance, body) => {
+const calculateCurrentBalance = (balance, body) => {
   if (body.income) {
     return balance + body.sum
   } else return balance - body.sum
@@ -28,20 +28,29 @@ const recalculateBalance = async (date, currentBalance, userId) => {
     date: { $gt: date },
     owner: userId,
   })
-  transactions.forEach((el) => {
-    balance = calculateCurrentBalance(balance, el).then((value) => {
-      Transaction.updateOne(
-        { _id: el.id },
-        { balance: value },
-        function (err, docs) {
-          if (err) {
-            console.log(err)
-          } else {
-            console.log('Updated Docs : ', docs)
-          }
+  const sortedTransactions = transactions.sort(function (a, b) {
+    if (a.date > b.date) {
+      return 1
+    }
+    if (a.date < b.date) {
+      return -1
+    }
+    return 0
+  })
+  sortedTransactions.forEach((el) => {
+    console.log(balance)
+    balance = calculateCurrentBalance(balance, el)
+    Transaction.updateOne(
+      { _id: el.id },
+      { balance: balance },
+      function (err, docs) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Updated Docs : ', docs)
         }
-      )
-    })
+      }
+    )
   })
 }
 

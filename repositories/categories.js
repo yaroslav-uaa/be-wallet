@@ -1,9 +1,13 @@
 const Transaction = require('../model/transaction')
 
 const getCategories = async (month, year) => {
-  const startDate = `${year}-${month}-01`
-  const endDate = configureEndDate(month, year)
+  const startDate = new Date(
+    `${year}-${prepareMonth(month)}-01T00:00`
+  ).toISOString()
+  const endDate = configureEndDate(month, year).toISOString()
 
+  console.log(startDate)
+  console.log(endDate)
   const transactions = await Transaction.find({
     date: { $gte: startDate, $lt: endDate },
   })
@@ -32,11 +36,24 @@ const getCategories = async (month, year) => {
 // ****функция для:
 // если выбирают декабрь, то конечная дата периода - 1 января СЛЕДУЮЩЕГО ГОДА
 const configureEndDate = (month, year) => {
+  console.log(
+    new Date(
+      `${year}-${prepareMonth((parseInt(month) + 1).toString())}-01T00:00`
+    )
+  )
   if (month === '12') {
-    return `${parseInt(year) + 1}-01-01`
+    return new Date(`${parseInt(year) + 1}-01-01T00:00`)
   } else {
-    return `${year}-${parseInt(month) + 1}-01`
+    return new Date(
+      `${year}-${prepareMonth((parseInt(month) + 1).toString())}-01T00:00`
+    )
   }
+}
+
+const prepareMonth = (month) => {
+  if (parseInt(month.length) === 2) {
+    return month
+  } else return `0${month}`
 }
 
 // ****функция для: ГРУППИРОВКИ
