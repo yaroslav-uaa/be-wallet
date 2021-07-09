@@ -6,8 +6,6 @@ const getCategories = async (month, year) => {
   ).toISOString()
   const endDate = configureEndDate(month, year).toISOString()
 
-  console.log(startDate)
-  console.log(endDate)
   const transactions = await Transaction.find({
     date: { $gte: startDate, $lt: endDate },
   })
@@ -32,7 +30,6 @@ const getCategories = async (month, year) => {
   }
 }
 
-// TODO: узнать  0 или 1 январь в дате при выборе в статистике
 // ****функция для:
 // если выбирают декабрь, то конечная дата периода - 1 января СЛЕДУЮЩЕГО ГОДА
 const configureEndDate = (month, year) => {
@@ -50,6 +47,7 @@ const configureEndDate = (month, year) => {
   }
 }
 
+// ****функция для:
 const prepareMonth = (month) => {
   if (parseInt(month.length) === 2) {
     return month

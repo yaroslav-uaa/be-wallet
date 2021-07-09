@@ -8,7 +8,6 @@ const getLatestBalance = async (date, userId) => {
   })
     .sort({ date: -1 })
     .limit(1)
-  console.log(lastTransaction)
   if (!lastTransaction || lastTransaction.length === 0) {
     return 0
   } else return lastTransaction[0].balance
@@ -33,17 +32,13 @@ const recalculateBalance = async (date, currentBalance, userId) => {
 
   sortedTransactions.forEach((el) => {
     balance = calculateCurrentBalance(balance, el)
-    Transaction.updateOne(
-      { _id: el.id },
-      { balance: balance },
-      function (err, docs) {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log('Updated Docs : ', docs)
-        }
+    Transaction.updateOne({ _id: el.id }, { balance: balance }, function (err) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('Success update')
       }
-    )
+    })
   })
 }
 
