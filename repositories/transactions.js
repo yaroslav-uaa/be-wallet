@@ -3,6 +3,7 @@ const {
   getLatestBalance,
   calculateCurrentBalance,
   recalculateBalance,
+  sortByDate,
 } = require('../helpers/calculate-balance')
 
 const listTransaction = async (userId) => {
@@ -11,20 +12,11 @@ const listTransaction = async (userId) => {
     select: 'email -_id',
   })
 
-  return results.sort(function (a, b) {
-    if (a.date > b.date) {
-      return 1
-    }
-    if (a.date < b.date) {
-      return -1
-    }
-    return 0
-  })
+  return sortByDate(results)
 }
 
 const addTransaction = async (userId, body) => {
   const lastTransactionBalance = await getLatestBalance(body.date, userId)
-  console.log(lastTransactionBalance)
   const currentBalance = await calculateCurrentBalance(
     lastTransactionBalance,
     body
@@ -51,6 +43,16 @@ const removeTransaction = async (userId, transactionId) => {
     _id: transactionId,
     owner: userId,
   })
+  const lastTransaction = await Transaction.find({
+    date: { $lte: result.date },
+    owner: userId,
+  })
+    .sort({ date: -1 })
+    .limit(1)
+
+  if (lastTransaction.length !== 0) {
+    recalculateBalance(result.date, lastTransaction[0].balance, userId)
+  } else recalculateBalance(result.date, '0', userId)
   return result
 }
 

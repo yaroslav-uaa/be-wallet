@@ -17,8 +17,8 @@ const getLatestBalance = async (date, userId) => {
 //* *расчет баланса добавляемой транзакции
 const calculateCurrentBalance = (balance, body) => {
   if (body.income) {
-    return balance + body.sum
-  } else return balance - body.sum
+    return parseInt(balance + body.sum)
+  } else return parseInt(balance - body.sum)
 }
 
 //* *перерасчет баланса последующих по дате за добавляемой транзакций
@@ -32,7 +32,6 @@ const recalculateBalance = async (date, currentBalance, userId) => {
   const sortedTransactions = sortByDate(transactions)
 
   sortedTransactions.forEach((el) => {
-    console.log(balance)
     balance = calculateCurrentBalance(balance, el)
     Transaction.updateOne(
       { _id: el.id },
@@ -48,6 +47,7 @@ const recalculateBalance = async (date, currentBalance, userId) => {
   })
 }
 
+//* *функция сортировки по дате
 const sortByDate = (transactions) => {
   return transactions.sort(function (a, b) {
     if (a.date > b.date) {
