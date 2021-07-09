@@ -47,7 +47,7 @@ const configureEndDate = (month, year) => {
   }
 }
 
-// ****функция для:
+// ****функция для: приведение значения месяца к нужному типу
 const prepareMonth = (month) => {
   if (parseInt(month.length) === 2) {
     return month

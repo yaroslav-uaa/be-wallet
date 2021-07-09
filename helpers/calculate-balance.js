@@ -1,6 +1,6 @@
 const Transaction = require('../model/transaction')
 
-//* *получение баланса с предыдущей для необходимой даты транзакции
+//* *получение баланса транзакции предыдущей  для необходимой даты транзакции
 const getLatestBalance = async (date, userId) => {
   const lastTransaction = await Transaction.find({
     date: { $lt: date },
