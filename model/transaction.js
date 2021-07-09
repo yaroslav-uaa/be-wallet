@@ -4,27 +4,34 @@ const transacSchema = new Schema(
   {
     date: {
       type: String,
+      required: true,
     },
     category: {
       type: String,
+      required: true,
     },
     income: {
       type: Boolean,
+      required: true,
       default: false,
     },
     comment: {
       type: String,
+      required: true,
     },
     sum: {
       type: Number,
+      required: true,
       min: 0,
     },
     balance: {
       type: Number,
+      required: true,
       min: 0,
     },
     owner: {
       type: SchemaTypes.ObjectId,
+      required: true,
       ref: 'user',
     },
   },
