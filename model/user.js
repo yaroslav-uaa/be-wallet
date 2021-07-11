@@ -21,7 +21,10 @@ const userSchema = new Schema(
       required: [true, 'Email is required'],
       unique: true,
     },
-    token: String,
+    token: {
+      type: String,
+      default: null,
+    },
     avatar: {
       type: String,
     },

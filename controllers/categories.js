@@ -4,11 +4,21 @@ const { HttpCode } = require('../helpers/constants')
 const getCategories = async (req, res, next) => {
   try {
     const { month, year } = req.query
-    const transactionsCategories = await Categories.getCategories(month, year)
+    const {
+      categories,
+      income,
+      consumption,
+      balance,
+    } = await Categories.getCategories(month, year)
     return res.json({
       status: 'success',
       code: HttpCode.OK,
-      data: { transactionsCategories },
+      data: {
+        categories,
+        income,
+        consumption,
+        balance,
+      },
     })
   } catch (e) {
     next(e)
