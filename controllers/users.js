@@ -64,7 +64,8 @@ const signIn = async (req, res, next) => {
     return res.json({
       status: 'success',
       code: HttpCode.OK,
-      data: { token, user: { name, email } },
+      token,
+      user: { name, email },
       message: 'You have logged in',
     })
   } catch (e) {
