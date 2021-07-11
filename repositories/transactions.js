@@ -1,9 +1,9 @@
 const Transaction = require('../model/transaction')
 
 const listTransaction = async (userId) => {
-  const results = await Transaction.findOne({ owner: userId }).populate({
+  const results = await Transaction.find({ owner: userId }).populate({
     path: 'owner',
-    select: 'email -_id',
+    select: '_id',
   })
   return results
 }
