@@ -4,8 +4,8 @@ const { HttpCode } = require('../helpers/constants')
 const getAll = async (req, res, next) => {
   try {
     const id = req.user.id
-    const result = await Transaction.listTransaction(id)
-    return res.json({ status: 'success', code: HttpCode.OK, data: { result } })
+    const transactions = await Transaction.listTransaction(id)
+    return res.json({ status: 'success', code: HttpCode.OK, transactions })
   } catch (e) {
     next(e)
   }
@@ -18,7 +18,7 @@ const addTransaction = async (req, res, next) => {
     return res.status(201).json({
       status: 'success',
       code: HttpCode.CREATED,
-      data: { transaction },
+      transaction,
     })
   } catch (e) {
     next(e)
