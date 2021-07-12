@@ -1,4 +1,5 @@
 const Transaction = require('../model/transaction')
+const { sortByDate } = require('../helpers/calculate-balance')
 
 const getCategories = async (month, year) => {
   const startDate = new Date(
@@ -22,11 +23,15 @@ const getCategories = async (month, year) => {
       sum: calculateSumByCategory(groupedTransactions[element]),
     }
   })
+
+  sortByDate(transactions)
+  const latestBalanceInPeriod = transactions[transactions.length - 1]
+
   return {
     categories: categories,
     income: income,
     consumption: consumption,
-    balance: income - consumption,
+    balance: latestBalanceInPeriod.balance,
   }
 }
 
