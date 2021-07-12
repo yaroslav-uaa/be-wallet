@@ -39,11 +39,11 @@ const {
  *           type: number
  *           description: Sum of income or outcome
  *       example:
- *         date: 07.07.2021
- *         category: Car
+ *         date: 2021-04-27T12:15:23.174Z
  *         income: true
- *         comment: Oil
- *         sum: 450
+ *         category: Regular
+ *         comment: Present for wife
+ *         sum: 12000
  */
 
 /**
