@@ -13,6 +13,7 @@
     "cloudinary": "^1.26.2",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
+    "dateformat": "^4.5.1",
     "dotenv": "^10.0.0",
     "express": "4.17.1",
     "express-rate-limit": "^5.3.0",
@@ -27,6 +28,9 @@
     "nodemailer": "^6.6.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui": "^3.51.1",
+    "swagger-ui-express": "^4.1.6",
     "util": "^0.12.4",
     "uuid": "^8.3.2"
   },
