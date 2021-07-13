@@ -11,6 +11,8 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const transactionsRouter = require('./routes/api/transactions/index')
 const categoriesRouter = require('./routes/api/transactions/categories')
 const usersRouter = require('./routes/api/users/index')
+const capitalRouter = require('./routes/api/transactions/capital')
+
 require('dotenv').config()
 const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
 
@@ -47,6 +49,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.use('/api/transactions', transactionsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/categories', categoriesRouter)
+app.use('/api/capital', capitalRouter)
 
 //! control error
 app.use((req, res) => {
