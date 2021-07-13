@@ -26,7 +26,7 @@ const addTransaction = async (userId, body) => {
     ...body,
     balance: currentBalance,
   })
-  recalculateBalance(body.date, currentBalance, userId)
+  recalculateBalance(body.date, currentBalance, userId, false)
   return results
 }
 
@@ -51,8 +51,8 @@ const removeTransaction = async (userId, transactionId) => {
     .limit(1)
 
   if (lastTransaction.length !== 0) {
-    recalculateBalance(result.date, lastTransaction[0].balance, userId)
-  } else recalculateBalance(result.date, '0', userId)
+    recalculateBalance(result.date, lastTransaction[0].balance, userId, false)
+  } else recalculateBalance(result.date, '0', userId, false)
   return result
 }
 
@@ -62,6 +62,20 @@ const updateTransaction = async (userId, transactionId, body) => {
     { ...body },
     { new: true }
   )
+  const lastTransaction = await Transaction.find({
+    date: { $lt: result.date },
+    owner: userId,
+  })
+    .sort({ date: -1 })
+    .limit(1)
+  if (lastTransaction.length !== 0) {
+    recalculateBalance(
+      lastTransaction[0].date,
+      lastTransaction[0].balance,
+      userId,
+      false
+    )
+  } else recalculateBalance(result.date, '0', userId, true)
   return result
 }
 

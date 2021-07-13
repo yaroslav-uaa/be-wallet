@@ -21,10 +21,15 @@ const calculateCurrentBalance = (balance, body) => {
 }
 
 //* *перерасчет баланса последующих по дате за добавляемой транзакций
-const recalculateBalance = async (date, currentBalance, userId) => {
+const recalculateBalance = async (
+  date,
+  currentBalance,
+  userId,
+  isLatestTransaction
+) => {
   let balance = currentBalance
   const transactions = await Transaction.find({
-    date: { $gt: date },
+    date: isLatestTransaction ? { $gte: date } : { $gt: date },
     owner: userId,
   })
 
