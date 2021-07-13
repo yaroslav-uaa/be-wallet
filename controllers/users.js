@@ -176,6 +176,28 @@ const avatars = async (req, res, next) => {
   }
 }
 
+const updateUserInfo = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const result = await Users.updateUser(userId, req.body)
+    console.log(result)
+    if (result) {
+      return res.json({
+        status: 'success',
+        code: HttpCode.OK,
+        data: { result },
+      })
+    }
+    return res.json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: 'Not found',
+    })
+  } catch (e) {
+    next(e)
+  }
+}
+
 module.exports = {
   signUpUser,
   signIn,
@@ -184,4 +206,5 @@ module.exports = {
   verifyUser,
   repeatVerification,
   avatars,
+  updateUserInfo,
 }
