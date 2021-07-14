@@ -7,7 +7,10 @@ const {
 } = require('../helpers/calculate-balance')
 
 const listTransaction = async (userId) => {
-  const results = await Transaction.find({ owner: userId }).populate({
+  const results = await Transaction.find({
+    owner: userId,
+    category: { $ne: 'Capital' },
+  }).populate({
     path: 'owner',
     select: '_id',
   })
