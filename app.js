@@ -19,8 +19,6 @@ const capitalRouter = require('./routes/api/transactions/capital')
 require('dotenv').config()
 const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
 
-const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
-
 const specs = swaggerJsDoc(options)
 const app = express()
 
