@@ -7,31 +7,19 @@ const rateLimit = require('express-rate-limit')
 const { limiterAPI } = require('./helpers/constants')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+const options = require('./helpers/swagger-options')
+require('dotenv').config()
 
 const transactionsRouter = require('./routes/api/transactions/index')
 const categoriesRouter = require('./routes/api/transactions/categories')
 const usersRouter = require('./routes/api/users/index')
+
 const capitalRouter = require('./routes/api/transactions/capital')
 
 require('dotenv').config()
 const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Wallet API',
-      version: '1.0.0',
-      description: 'A simple Express Wallet API build with MongoDB',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000/api',
-      },
-    ],
-  },
-  apis: ['./routes/api/users/index.js', './routes/api/transactions/index.js'],
-}
+const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
 
 const specs = swaggerJsDoc(options)
 const app = express()

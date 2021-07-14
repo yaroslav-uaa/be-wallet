@@ -28,6 +28,12 @@ const { validateSignInUser, validationSignUpUser } = require('./validation')
  *         token:
  *           type: string
  *           description: The token for authorization
+ *         avatar:
+ *           type: string
+ *           description: The user`s avatar
+ *         idCloudAvatar:
+ *           type: string
+ *           description: The user`s avatarId
  *         isVerified:
  *           type: boolean
  *           description: Verification value of user`s email
@@ -120,6 +126,7 @@ router.post('/signout', guard, ctrlUser.signOut)
  *         description: System error
  */
 router.get('/current', guard, ctrlUser.currentUser)
+
 router.get('/verify/:token', ctrlUser.verifyUser)
 router.post('/verify', ctrlUser.repeatVerification)
 router.patch('/avatars', guard, upload.single('avatar'), ctrlUser.avatars)
