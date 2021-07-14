@@ -27,7 +27,6 @@ const transacSchema = new Schema(
     balance: {
       type: Number,
       required: true,
-      min: 0,
     },
     owner: {
       type: SchemaTypes.ObjectId,
