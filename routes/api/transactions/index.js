@@ -156,23 +156,22 @@ router.delete('/:transactionId', guard, controllers.removeTransaction)
  *  put:
  *     security:
  *      - bearerAuth: []
- *    summary: Update the transaction by the id
- *    tags: [Transaction]
+ *     summary: update the transaction by id
+ *     tags: [Transaction]
  *     parameters:
  *       - in: path
- *         _id: transactionId
- *         owner: userId
- *        schema:
- *          type: string
- *        required: true
- *        description: The transaction id
- *    requestBody:
- *      required: true
- *      content:
+ *         name: transactionId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The transaction id
+ *     requestBody:
+ *       required: true
+ *       content:
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Transaction'
- *    responses:
+ *     responses:
  *      200:
  *        description: The transaction was updated
  *      401:

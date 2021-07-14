@@ -60,12 +60,12 @@ const signIn = async (req, res, next) => {
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' })
     await Users.updateTokenUser(id, token)
 
-    const { name, email } = user
+    const { name, email, avatar } = user
     return res.json({
       status: 'success',
       code: HttpCode.OK,
       token,
-      user: { name, email },
+      user: { name, email, avatar },
       message: 'You have logged in',
     })
   } catch (e) {

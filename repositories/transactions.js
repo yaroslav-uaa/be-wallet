@@ -57,7 +57,7 @@ const removeTransaction = async (userId, transactionId) => {
 }
 
 const updateTransaction = async (userId, transactionId, body) => {
-  const result = await Transaction.findOneAndUpdate(
+  const result = await Transaction.findAndModify(
     { _id: transactionId, owner: userId },
     { ...body },
     { new: true }
