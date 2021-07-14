@@ -182,7 +182,7 @@ router.delete('/:transactionId', guard, controllers.removeTransaction)
  *        description: Some error happened
  */
 
-router.put(
+router.patch(
   '/:transactionId',
   guard,
   validationUpdateTransaction,
