@@ -46,11 +46,50 @@ class EmailService {
     }
     return mailGenerator.generate(email)
   }
+
   async sendVerifyEmail(verifyToken, email) {
     const emailHtml = this.#createTemplateVerificationEmail(verifyToken)
     const msg = {
       to: email,
       subject: 'Verify your account',
+      html: emailHtml,
+    }
+    const result = await this.sender.send(msg)
+    console.log(result)
+  }
+
+  #createTemplateResetPasswordEmail(user) {
+    // Configure mailgen
+    const mailGenerator = new Mailgen({
+      theme: 'salted',
+      textDirection: 'rtl',
+      product: {
+        name: 'CatsRevenants System',
+        link: this.link,
+        copyright: 'Copyright © 2021 CatsRevenants. All rights reserved.',
+      },
+    })
+    const passwordResetEmail = {
+      body: {
+        intro:
+          "Welcome to CatsRevenants System! We're very excited to have you on board.",
+        action: {
+          instructions: 'To get reset your password, please click here:',
+          button: {
+            color: '#7427F3', // Optional action button color
+            text: 'reset your Password',
+            link: `${this.link}/api/users/reset-password?token=${user.resetToken.token}`,
+          },
+        },
+      },
+    }
+    return mailGenerator.generate(passwordResetEmail)
+  }
+  async sendResetPasswordEmail(user, passwordResetEmail) {
+    const emailHtml = this.#createTemplateResetPasswordEmail(user)
+    const msg = {
+      to: passwordResetEmail,
+      subject: 'Reset password for your account',
       html: emailHtml,
     }
     const result = await this.sender.send(msg)

@@ -1,5 +1,5 @@
 const Transaction = require('../model/transaction')
-const { sortByDate } = require('../helpers/calculate-balance')
+const { sortByDate } = require('./calculate-balance')
 
 const getCategories = async (month, year, userId) => {
   const startDate = new Date(

@@ -12,7 +12,7 @@ const HttpCode = {
 }
 const limiterAPI = {
   windowMs: 15 * 60 * 1000, // 15 min
-  max: 1000,
+  max: 3000,
   handler: (req, res, next) => {
     return res.status(HttpCode.TOO_MANY_REQUEST).json({
       status: 'error',
