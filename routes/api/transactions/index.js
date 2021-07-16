@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const controllers = require('../../../controllers/transactions')
-const controllerCategories = require('../../../controllers/categories')
-const controllerCapital = require('../../../controllers/capital')
 
 const guard = require('../../../helpers/guard')
 const {
@@ -14,8 +12,6 @@ const {
 router
   .get('/', guard, controllers.getAll)
   .post('/', guard, validationCreateTransaction, controllers.addTransaction)
-  .get('/', guard, controllerCategories.getCategories)
-  .post('/', guard, controllerCapital.addCapital)
 
 router
   .get('/:transactionId', guard, controllers.getTransactionById)
