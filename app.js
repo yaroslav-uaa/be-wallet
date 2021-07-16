@@ -12,6 +12,7 @@ require('dotenv').config()
 const transactionsRouter = require('./routes/api/transactions/index')
 const usersRouter = require('./routes/api/users/index')
 const categoriesRouter = require('./routes/api/transactions/categories')
+const capitalRouter = require('./routes/api/transactions/capital')
 
 require('dotenv').config()
 const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS
@@ -33,7 +34,8 @@ app.use('/api-docs', require('./helpers/swagger'))
 // api routes
 app.use('/api/users', usersRouter)
 app.use('/api/transactions', transactionsRouter)
-app.use('/api/', categoriesRouter)
+app.use('/api/categories', categoriesRouter)
+app.use('/api/capital', capitalRouter)
 // global error handler
 app.use(errorHandler)
 
