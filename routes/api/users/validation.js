@@ -11,6 +11,20 @@ const schemaSignInUser = Joi.object({
   password: Joi.string().required(),
 })
 
+const schemaForgotPassword = Joi.object({
+  email: Joi.string().email().required(),
+})
+
+const schemaResetPassword = Joi.object({
+  token: Joi.string().required(),
+  password: Joi.string().min(6).required(),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
+})
+
+const schemaResetToken = Joi.object({
+  token: Joi.string().required(),
+})
+
 const validate = async (schema, obj, next) => {
   try {
     await schema.validateAsync(obj)
@@ -22,6 +36,7 @@ const validate = async (schema, obj, next) => {
     })
   }
 }
+
 module.exports = {
   validationSignUpUser: (req, res, next) => {
     return validate(schemaSignUpUser, req.body, next)
@@ -29,5 +44,15 @@ module.exports = {
 
   validateSignInUser: (req, res, next) => {
     return validate(schemaSignInUser, req.body, next)
+  },
+  validateForgotPassword: (req, res, next) => {
+    return validate(schemaForgotPassword, req.body, next)
+  },
+
+  validateResetPassword: (req, res, next) => {
+    return validate(schemaResetPassword, req.body, next)
+  },
+  validateResetToken: (req, res, next) => {
+    return validate(schemaResetToken, req.body, next)
   },
 }
