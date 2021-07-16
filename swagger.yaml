@@ -16,9 +16,9 @@ paths:
       requestBody:
         required: true
         content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/User'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       responses:
         201:
           description: You registered successfully
@@ -26,7 +26,6 @@ paths:
           description: Email is already used
         500:
           description: System error
-
   /users/signin:
     post:
       summary: Sign in to app
@@ -193,12 +192,16 @@ components:
         idCloudAvatar:
           type: string
           description: The user`s avatarId
-        isVerified:
+        verified:
           type: boolean
           description: Verification value of user`s email
         verifyToken:
           type: string
           description: The verified token
+        resetToken:
+          token: string
+          expires: date
+          description: The token for forgot and reset password
       example:
         password: 12345678
         email: shelby@gmail.com
