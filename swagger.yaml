@@ -5,7 +5,7 @@ info:
   description: 'A simple Express Wallet API build with MongoDB'
     
 servers: 
-  - url: 'http://localhost:4040/api'
+  - url: 'https://be-wallet.herokuapp.com/api'
     description: Local development server
 
 paths:
