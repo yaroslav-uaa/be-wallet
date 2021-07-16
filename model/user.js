@@ -32,7 +32,7 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    isVerified: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -41,10 +41,25 @@ const userSchema = new Schema(
       required: true,
       default: uuid(),
     },
+    // verified: Date,
+    resetToken: {
+      token: String,
+      expires: Date,
+    },
+    passwordReset: Date,
+    created: { type: Date, default: Date.now },
+    updated: Date,
   },
   {
     versionKey: false,
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret._id
+        delete ret.password
+      },
+    },
   }
 )
 userSchema.pre('save', async function (next) {
@@ -53,6 +68,10 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt)
   }
   next()
+})
+
+userSchema.virtual('isVerified').get(function () {
+  return !!(this.verified || this.passwordReset)
 })
 
 userSchema.methods.isValidPassword = async function (password) {

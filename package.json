@@ -32,7 +32,8 @@
     "swagger-ui": "^3.51.1",
     "swagger-ui-express": "^4.1.6",
     "util": "^0.12.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^7.30.0",

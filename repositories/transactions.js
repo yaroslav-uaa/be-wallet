@@ -4,7 +4,7 @@ const {
   calculateCurrentBalance,
   recalculateBalance,
   sortByDate,
-} = require('../helpers/calculate-balance')
+} = require('./calculate-balance')
 
 const listTransaction = async (userId) => {
   const results = await Transaction.find({

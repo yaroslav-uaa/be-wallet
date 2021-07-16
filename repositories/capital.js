@@ -1,5 +1,5 @@
 const Transaction = require('../model/transaction')
-const { recalculateBalance } = require('../helpers/calculate-balance')
+const { recalculateBalance } = require('./calculate-balance')
 
 const addCapital = async (userId, body) => {
   const initialCapital = await Transaction.find({ category: 'Capital' })
