@@ -93,12 +93,12 @@ const currentUser = async (req, res, next) => {
       })
     }
 
-    const { name, email } = req.user
+    const { name, email, avatar } = req.user
 
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
-      user: { name, email },
+      user: { name, email, avatar },
     })
   } catch (error) {
     next(error)
