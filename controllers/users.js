@@ -10,6 +10,8 @@ require('dotenv').config()
 const UploadAvatarService = require('../services/cloud-upload')
 const SECRET_KEY = process.env.SECRET_KEY
 
+// Users CONTROLLERS
+
 const signUpUser = async (req, res, next) => {
   try {
     const user = await Users.findUserByEmail(req.body.email)
@@ -48,11 +50,11 @@ const signIn = async (req, res, next) => {
   try {
     const user = await Users.findUserByEmail(req.body.email)
     const isValidPassword = await user?.isValidPassword(req.body.password)
-    if (!user || !isValidPassword || !user.isVerified) {
+    if (!user || !user.isVerified || !isValidPassword) {
       return res.status(HttpCode.UNAUTHORIZED).json({
         status: 'error',
         code: HttpCode.UNAUTHORIZED,
-        message: 'Invalid login or password',
+        message: 'Email or password is incorrect',
       })
     }
     const id = user.id
@@ -198,6 +200,66 @@ const updateUserInfo = async (req, res, next) => {
   }
 }
 
+const forgotPassword = async (req, res, next) => {
+  try {
+    const result = Users.forgotPassword(req.body)
+    if (!result) {
+      return res.json({
+        status: 'error',
+        code: HttpCode.CONFLICT,
+        message: 'Something wrong',
+      })
+    }
+    return res.json({
+      status: 'success',
+      code: HttpCode.OK,
+      message: 'Please check your email for password reset instructions',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const verifyResetToken = async (req, res, next) => {
+  try {
+    const result = Users.validateResetToken(req.body)
+    if (!result) {
+      return res.json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        message: 'Token is  not valid',
+      })
+    }
+    return res.json({
+      status: 'success',
+      code: HttpCode.OK,
+      message: 'Token is valid',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const result = Users.resetPassword(req.body)
+    if (!result) {
+      return res.json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        message: 'Token is  not valid',
+      })
+    }
+    return res.json({
+      status: 'success',
+      code: HttpCode.OK,
+      message: 'Password reset successful, you can now login',
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   signUpUser,
   signIn,
@@ -207,4 +269,7 @@ module.exports = {
   repeatVerification,
   avatars,
   updateUserInfo,
+  verifyResetToken,
+  forgotPassword,
+  resetPassword,
 }
