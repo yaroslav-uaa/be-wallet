@@ -52,10 +52,15 @@ const removeTransaction = async (userId, transactionId) => {
   })
     .sort({ date: -1 })
     .limit(1)
-
+  console.log(lastTransaction)
   if (lastTransaction.length !== 0) {
-    recalculateBalance(result.date, lastTransaction[0].balance, userId, false)
-  } else recalculateBalance(result.date, '0', userId, false)
+    await recalculateBalance(
+      result.date,
+      lastTransaction[0].balance,
+      userId,
+      false
+    )
+  } else await recalculateBalance(result.date, '0', userId, false)
 
   const results = await listTransaction(userId)
   return results

@@ -35,8 +35,14 @@ const recalculateBalance = async (
 
   const sortedTransactions = sortByDateReverse(transactions)
 
+  console.log(sortedTransactions)
+  console.log(date)
+  console.log(currentBalance)
+  console.log(userId)
+
   sortedTransactions.forEach((el) => {
     balance = calculateCurrentBalance(balance, el)
+    console.log(balance)
     Transaction.updateOne({ _id: el.id }, { balance: balance }, function (err) {
       if (err) {
         console.log(err)
