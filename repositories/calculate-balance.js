@@ -33,7 +33,7 @@ const recalculateBalance = async (
     owner: userId,
   })
 
-  const sortedTransactions = sortByDate(transactions)
+  const sortedTransactions = sortByDateReverse(transactions)
 
   sortedTransactions.forEach((el) => {
     balance = calculateCurrentBalance(balance, el)
@@ -60,9 +60,22 @@ const sortByDate = (transactions) => {
   })
 }
 
+const sortByDateReverse = (transactions) => {
+  return transactions.sort(function (a, b) {
+    if (a.date > b.date) {
+      return 1
+    }
+    if (a.date < b.date) {
+      return -1
+    }
+    return 0
+  })
+}
+
 module.exports = {
   getLatestBalance,
   calculateCurrentBalance,
   recalculateBalance,
   sortByDate,
+  sortByDateReverse,
 }
