@@ -6,14 +6,14 @@ class EmailService {
     this.sender = sender
     switch (env) {
       case 'development':
-        this.link = 'http://be-wallet.herokuapp.com'
+        this.link = 'https://be-wallet.herokuapp.com'
         break
       case 'production':
-        this.link = 'http://be-wallet.herokuapp.com'
+        this.link = 'https://be-wallet.herokuapp.com'
         break
 
       default:
-        this.link = 'http://be-wallet.herokuapp.com'
+        this.link = 'https://be-wallet.herokuapp.com'
 
         break
     }
