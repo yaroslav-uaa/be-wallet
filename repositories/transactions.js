@@ -56,7 +56,9 @@ const removeTransaction = async (userId, transactionId) => {
   if (lastTransaction.length !== 0) {
     recalculateBalance(result.date, lastTransaction[0].balance, userId, false)
   } else recalculateBalance(result.date, '0', userId, false)
-  return result
+
+  const results = await listTransaction(userId)
+  return results
 }
 
 const updateTransaction = async (userId, transactionId, body) => {
@@ -71,6 +73,7 @@ const updateTransaction = async (userId, transactionId, body) => {
   })
     .sort({ date: -1 })
     .limit(1)
+  console.log(lastTransaction)
   if (lastTransaction.length !== 0) {
     recalculateBalance(
       lastTransaction[0].date,
@@ -79,7 +82,8 @@ const updateTransaction = async (userId, transactionId, body) => {
       false
     )
   } else recalculateBalance(result.date, '0', userId, true)
-  return result
+  const results = await listTransaction(userId)
+  return results
 }
 
 module.exports = {
