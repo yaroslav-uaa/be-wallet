@@ -51,10 +51,10 @@ const recalculateBalance = async (
 const sortByDate = (transactions) => {
   return transactions.sort(function (a, b) {
     if (a.date > b.date) {
-      return 1
+      return -1
     }
     if (a.date < b.date) {
-      return -1
+      return 1
     }
     return 0
   })
