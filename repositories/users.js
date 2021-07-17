@@ -23,8 +23,8 @@ const createUser = async (body) => {
 const updateTokenUser = async (id, token) => {
   return await User.updateOne({ _id: id }, { token })
 }
-const updateVerifyToken = async (id, isVerified, verifyToken) => {
-  return await User.updateOne({ _id: id }, { isVerified, verifyToken })
+const updateVerifyToken = async (id, verified, verifyToken) => {
+  return await User.updateOne({ _id: id }, { verified, verifyToken })
 }
 
 const updateAvatar = async (id, avatar, idCloudAvatar = null) => {

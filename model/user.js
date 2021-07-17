@@ -70,9 +70,9 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-userSchema.virtual('isVerified').get(function () {
-  return !!(this.verified || this.passwordReset)
-})
+// userSchema.virtual('isVerified').get(function () {
+//   return !!(this.verified || this.passwordReset)
+// })
 
 userSchema.methods.isValidPassword = async function (password) {
   return await bcrypt.compare(password, this.password)

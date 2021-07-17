@@ -32,6 +32,8 @@ const removeTransaction = async (req, res, next) => {
       userId,
       req.params.transactionId
     )
+    const transactions = await Transaction.listTransaction(userId)
+
     if (result) {
       return res.json({
         status: 'success',
