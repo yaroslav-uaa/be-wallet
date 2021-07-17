@@ -50,7 +50,7 @@ const signIn = async (req, res, next) => {
   try {
     const user = await Users.findUserByEmail(req.body.email)
     const isValidPassword = await user?.isValidPassword(req.body.password)
-    if (!user || !user.isVerified || !isValidPassword) {
+    if (!user || !user.verified || !isValidPassword) {
       return res.status(HttpCode.UNAUTHORIZED).json({
         status: 'error',
         code: HttpCode.UNAUTHORIZED,
@@ -131,8 +131,8 @@ const repeatVerification = async (req, res, next) => {
   try {
     const user = await Users.findByEmail(req.body.email)
     if (user) {
-      const { email, isVerified, verifyToken } = user
-      if (!isVerified) {
+      const { email, verified, verifyToken } = user
+      if (!verified) {
         const emailService = new EmailService(
           process.env.NODE_ENV,
           new CreateSenderNodemailer()
