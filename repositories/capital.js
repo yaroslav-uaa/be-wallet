@@ -15,7 +15,7 @@ const addCapital = async (userId, body) => {
       owner: userId,
     })
     console.log(`new ${capital}`)
-    recalculateBalance(capital.date, '0', userId, true)
+    await recalculateBalance(capital.date, '0', userId, true)
   } else {
     capital = await Transaction.findOneAndReplace(
       { _id: initialCapital[0].id },
@@ -27,10 +27,11 @@ const addCapital = async (userId, body) => {
         sum: body.sum,
         balance: body.sum,
         owner: userId,
-      }
+      },
+      { new: true }
     )
     console.log(`overwrite ${capital}`)
-    recalculateBalance(capital.date, '0', userId, true)
+    await recalculateBalance(capital.date, '0', userId, true)
   }
   return capital
 }

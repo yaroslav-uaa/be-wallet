@@ -4,6 +4,6 @@ const guard = require('../../../helpers/guard')
 
 const controllerCapital = require('../../../controllers/capital')
 
-router.get('/', guard, controllerCapital.addCapital)
+router.post('/', guard, controllerCapital.addCapital)
 
 module.exports = router

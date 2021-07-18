@@ -29,7 +29,7 @@ const addTransaction = async (userId, body) => {
     ...body,
     balance: currentBalance,
   })
-  recalculateBalance(body.date, currentBalance, userId, false)
+  await recalculateBalance(body.date, currentBalance, userId, false)
   return results
 }
 
@@ -54,9 +54,20 @@ const removeTransaction = async (userId, transactionId) => {
     .limit(1)
 
   if (lastTransaction.length !== 0) {
-    recalculateBalance(result.date, lastTransaction[0].balance, userId, false)
-  } else recalculateBalance(result.date, '0', userId, false)
-  return result
+    console.log('removeTransaction length > 0')
+    await recalculateBalance(
+      result.date,
+      lastTransaction[0].balance,
+      userId,
+      false
+    )
+  } else {
+    console.log('removeTransaction length === 0')
+    await recalculateBalance(result.date, '0', userId, false)
+  }
+
+  const results = await listTransaction(userId)
+  return results
 }
 
 const updateTransaction = async (userId, transactionId, body) => {
@@ -72,14 +83,15 @@ const updateTransaction = async (userId, transactionId, body) => {
     .sort({ date: -1 })
     .limit(1)
   if (lastTransaction.length !== 0) {
-    recalculateBalance(
+    await recalculateBalance(
       lastTransaction[0].date,
       lastTransaction[0].balance,
       userId,
       false
     )
-  } else recalculateBalance(result.date, '0', userId, true)
-  return result
+  } else await recalculateBalance(result.date, '0', userId, true)
+  const results = await listTransaction(userId)
+  return results
 }
 
 module.exports = {

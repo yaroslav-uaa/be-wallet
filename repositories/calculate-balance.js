@@ -33,22 +33,38 @@ const recalculateBalance = async (
     owner: userId,
   })
 
-  const sortedTransactions = sortByDate(transactions)
+  const sortedTransactions = sortByDateReverse(transactions)
 
-  sortedTransactions.forEach((el) => {
+  await sortedTransactions.forEach(async (el) => {
     balance = calculateCurrentBalance(balance, el)
-    Transaction.updateOne({ _id: el.id }, { balance: balance }, function (err) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log('Success update')
+    await Transaction.updateOne(
+      { _id: el.id },
+      { balance: balance },
+      function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Success update')
+        }
       }
-    })
+    )
   })
 }
 
 //* *функция сортировки по дате
 const sortByDate = (transactions) => {
+  return transactions.sort(function (a, b) {
+    if (a.date > b.date) {
+      return -1
+    }
+    if (a.date < b.date) {
+      return 1
+    }
+    return 0
+  })
+}
+
+const sortByDateReverse = (transactions) => {
   return transactions.sort(function (a, b) {
     if (a.date > b.date) {
       return 1
@@ -65,4 +81,5 @@ module.exports = {
   calculateCurrentBalance,
   recalculateBalance,
   sortByDate,
+  sortByDateReverse,
 }
