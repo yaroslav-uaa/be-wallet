@@ -35,21 +35,19 @@ const recalculateBalance = async (
 
   const sortedTransactions = sortByDateReverse(transactions)
 
-  console.log(sortedTransactions)
-  console.log(date)
-  console.log(currentBalance)
-  console.log(userId)
-
-  sortedTransactions.forEach((el) => {
+  await sortedTransactions.forEach(async (el) => {
     balance = calculateCurrentBalance(balance, el)
-    console.log(balance)
-    Transaction.updateOne({ _id: el.id }, { balance: balance }, function (err) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log('Success update')
+    await Transaction.updateOne(
+      { _id: el.id },
+      { balance: balance },
+      function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Success update')
+        }
       }
-    })
+    )
   })
 }
 
