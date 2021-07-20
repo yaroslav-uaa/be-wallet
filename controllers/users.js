@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs/promises')
 const EmailService = require('../services/mail-generator')
 const CreateSenderNodemailer = require('../services/email-sender')
-
 require('dotenv').config()
 
 const UploadAvatarService = require('../services/cloud-upload')
@@ -32,10 +31,12 @@ const signUpUser = async (req, res, next) => {
         process.env.NODE_ENV,
         new CreateSenderNodemailer()
       )
+
       await emailService.sendVerifyEmail(verifyToken, email)
     } catch (error) {
       console.log(error)
     }
+
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.CREATED,
@@ -117,6 +118,7 @@ const verifyUser = async (req, res, next) => {
         data: { message: 'Success!' },
       })
     }
+
     return res.status(HttpCode.BAD_REQUEST).json({
       status: 'error',
       code: HttpCode.BAD_REQUEST,
@@ -129,7 +131,7 @@ const verifyUser = async (req, res, next) => {
 
 const repeatVerification = async (req, res, next) => {
   try {
-    const user = await Users.findByEmail(req.body.email)
+    const user = await Users.findUserByEmail(req.body.email)
     if (user) {
       const { email, verified, verifyToken } = user
       if (!verified) {
@@ -147,7 +149,7 @@ const repeatVerification = async (req, res, next) => {
       return res.status(HttpCode.CONFLICT).json({
         status: 'error',
         code: HttpCode.CONFLICT,
-        message: 'Email has been verified',
+        message: 'Email has been already verified',
       })
     }
     return res.status(HttpCode.NOT_FOUND).json({
