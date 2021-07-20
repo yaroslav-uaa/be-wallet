@@ -1,11 +1,11 @@
 openapi: '3.0.0'
-info: 
+info:
   title: 'Wallet API'
   version: '1.0.0'
   description: 'A simple Express Wallet API build with MongoDB'
-    
-servers: 
-  - url: 'https://be-wallet.herokuapp.com/api'
+
+servers:
+  - url: 'http://localhost:4040/api'
     description: Local development server
 
 paths:
@@ -36,7 +36,7 @@ paths:
             schema:
               $ref: '#/components/schemas/User'
             example:
-              password: "12345678"
+              password: '12345678'
               email: shelby1234@ukr.net
       responses:
         200:
@@ -69,6 +69,41 @@ paths:
           description: Lost token in header
         500:
           description: System error
+  /users/verify:
+    post:
+      summary: Send email for verification
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              email: shelby1234@ukr.net
+      responses:
+        200:
+          description: Resubmitted verification
+        404:
+          description: User not found
+        409:
+          description: Email has not been verified
+  /users/verify/{verifyToken}:
+    get:
+      summary: Verify user
+      tags: [User]
+      parameters:
+        - in: path
+          name: verifyToken
+          schema:
+            type: string
+          required: true
+          description: Users verifyToken
+      responses:
+        200:
+          description: User is verified
+        400:
+          description: Verification token isn`t valid
   /transactions:
     get:
       security:
@@ -80,7 +115,6 @@ paths:
           description: The list of the transactions
         401:
           description: Unauthorized
-  /transactions:
     post:
       security:
         - bearerAuth: []
@@ -138,7 +172,7 @@ paths:
           description: Unauthorized
         404:
           description: The transaction was not found
-    put:
+    patch:
       security:
         - bearerAuth: []
       summary: update the transaction by id
@@ -203,7 +237,7 @@ components:
           expires: date
           description: The token for forgot and reset password
       example:
-        password: 12345678
+        password: '12345678'
         email: shelby@gmail.com
         name: Thomas
     Transaction:
@@ -213,6 +247,7 @@ components:
         - income
         - category
         - comment
+        - sum
       properties:
         id:
           type: string
@@ -231,7 +266,13 @@ components:
           description: The details of transaction`s category
         sum:
           type: number
-          description: Sum of income or outcome
+          description: Value of income or outcome
+        balance:
+          type: number
+          description: Sum of income or outcome values
+        owner:
+          type: id
+          description: User`s id
       example:
         date: 2021-04-27T12:15:23.174Z
         income: true
