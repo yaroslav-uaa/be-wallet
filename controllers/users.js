@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs/promises')
 const EmailService = require('../services/mail-generator')
 const CreateSenderNodemailer = require('../services/email-sender')
+
 require('dotenv').config()
 
 const UploadAvatarService = require('../services/cloud-upload')
@@ -95,7 +96,13 @@ const currentUser = async (req, res, next) => {
         message: 'Not authorized',
       })
     }
-
+    if (!req.user.token) {
+      return res.status(HttpCode.CONFLICT).json({
+        status: 'error',
+        code: HttpCode.CONFLICT,
+        message: 'Token Not valid',
+      })
+    }
     const { name, email, avatar } = req.user
 
     return res.status(HttpCode.OK).json({
@@ -107,15 +114,20 @@ const currentUser = async (req, res, next) => {
     next(error)
   }
 }
+
 const verifyUser = async (req, res, next) => {
   try {
     const user = await Users.findByVerifyToken(req.params.token)
     if (user) {
       await Users.updateVerifyToken(user.id, true, null)
-      return res.status(HttpCode.OK).json({
-        status: 'success',
-        code: HttpCode.OK,
-        data: { message: 'Success!' },
+      fs.readFile('../verifyPage/index.html', null, function (error, data) {
+        if (error) {
+          res.writeHead(404)
+          res.write('File not found!')
+        } else {
+          res.write(data)
+        }
+        res.end()
       })
     }
 
@@ -204,23 +216,56 @@ const updateUserInfo = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   try {
-    const result = Users.forgotPassword(req.body)
-    if (!result) {
-      return res.json({
+    const user = await Users.findUserByEmail(req.body.email)
+    if (user) {
+      const { email, resetToken } = user
+      if (!verified) {
+        const emailService = new EmailService(
+          process.env.NODE_ENV,
+          new CreateSenderNodemailer()
+        )
+        await emailService.sendResetPasswordEmail(resetToken, email)
+        return res.status(HttpCode.OK).json({
+          status: 'success',
+          code: HttpCode.OK,
+          message: 'Resubmitted verification',
+        })
+      }
+      return res.status(HttpCode.CONFLICT).json({
         status: 'error',
         code: HttpCode.CONFLICT,
-        message: 'Something wrong',
+        message: 'Email has been already verified',
       })
     }
-    return res.json({
-      status: 'success',
-      code: HttpCode.OK,
-      message: 'Please check your email for password reset instructions',
+    return res.status(HttpCode.NOT_FOUND).json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      message: 'User not found',
     })
   } catch (error) {
     next(error)
   }
 }
+
+// const forgotPassword = async (req, res, next) => {
+//   try {
+//     const result = Users.forgotPassword(req.body)
+//     if (!result) {
+//       return res.json({
+//         status: 'error',
+//         code: HttpCode.CONFLICT,
+//         message: 'Something wrong',
+//       })
+//     }
+//     return res.json({
+//       status: 'success',
+//       code: HttpCode.OK,
+//       message: 'Please check your email for password reset instructions',
+//     })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 const verifyResetToken = async (req, res, next) => {
   try {
