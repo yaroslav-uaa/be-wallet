@@ -31,11 +31,9 @@ const recalculateBalance = async (
   const transactions = await Transaction.find({
     date: isLatestTransaction ? { $gte: date } : { $gt: date },
     owner: userId,
-  })
+  }).sort({ date: 'asc' })
 
-  const sortedTransactions = sortByDateReverse(transactions)
-
-  await sortedTransactions.forEach(async (el) => {
+  await transactions.forEach(async (el) => {
     balance = calculateCurrentBalance(balance, el)
     await Transaction.updateOne(
       { _id: el.id },
@@ -48,19 +46,6 @@ const recalculateBalance = async (
         }
       }
     )
-  })
-}
-
-//* *функция сортировки по дате
-const sortByDate = (transactions) => {
-  return transactions.sort(function (a, b) {
-    if (a.date > b.date) {
-      return -1
-    }
-    if (a.date < b.date) {
-      return 1
-    }
-    return 0
   })
 }
 
@@ -80,6 +65,5 @@ module.exports = {
   getLatestBalance,
   calculateCurrentBalance,
   recalculateBalance,
-  sortByDate,
   sortByDateReverse,
 }

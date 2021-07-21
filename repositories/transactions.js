@@ -3,19 +3,20 @@ const {
   getLatestBalance,
   calculateCurrentBalance,
   recalculateBalance,
-  sortByDate,
 } = require('./calculate-balance')
 
 const listTransaction = async (userId) => {
   const results = await Transaction.find({
     owner: userId,
     category: { $ne: 'Capital' },
-  }).populate({
-    path: 'owner',
-    select: '_id',
   })
+    .populate({
+      path: 'owner',
+      select: '_id',
+    })
+    .sort({ date: -1 })
 
-  return sortByDate(results)
+  return results
 }
 
 const addTransaction = async (userId, body) => {
