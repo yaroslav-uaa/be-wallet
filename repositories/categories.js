@@ -9,10 +9,12 @@ const getCategories = async (month, year, userId) => {
   const transactions = await Transaction.find({
     owner: userId,
     date: { $gte: startDate, $lt: endDate },
-  }).populate({
-    path: 'owner',
-    select: '_id',
-  }).sort({ date: 'asc' })
+  })
+    .populate({
+      path: 'owner',
+      select: '_id',
+    })
+    .sort({ date: 'asc' })
 
   const income = calculateIncome(transactions)
   const consumption = calculateConsumption(transactions)

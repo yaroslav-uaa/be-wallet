@@ -49,21 +49,8 @@ const recalculateBalance = async (
   })
 }
 
-const sortByDateReverse = (transactions) => {
-  return transactions.sort(function (a, b) {
-    if (a.date > b.date) {
-      return 1
-    }
-    if (a.date < b.date) {
-      return -1
-    }
-    return 0
-  })
-}
-
 module.exports = {
   getLatestBalance,
   calculateCurrentBalance,
   recalculateBalance,
-  sortByDateReverse,
 }
