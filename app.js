@@ -24,7 +24,7 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(helmet())
 app.use(logger(formatsLogger))
 app.use(express.static(path.join(__dirname, AVATAR_OF_USERS)))
-app.use(express.static(path.join(__dirname, './verifyPage/index.html')))
+app.use(express.static(path.join(__dirname, '/public')))
 app.use(cors())
 app.use(express.json({ limit: 10000 }))
 app.use('/api/', rateLimit(limiterAPI))
