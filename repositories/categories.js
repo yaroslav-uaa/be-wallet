@@ -1,5 +1,4 @@
 const Transaction = require('../model/transaction')
-const { sortByDate } = require('./calculate-balance')
 
 const getCategories = async (month, year, userId) => {
   const startDate = new Date(
@@ -10,10 +9,12 @@ const getCategories = async (month, year, userId) => {
   const transactions = await Transaction.find({
     owner: userId,
     date: { $gte: startDate, $lt: endDate },
-  }).populate({
-    path: 'owner',
-    select: '_id',
   })
+    .populate({
+      path: 'owner',
+      select: '_id',
+    })
+    .sort({ date: 'asc' })
 
   const income = calculateIncome(transactions)
   const consumption = calculateConsumption(transactions)
@@ -28,7 +29,6 @@ const getCategories = async (month, year, userId) => {
     }
   })
 
-  sortByDate(transactions)
   const latestBalanceInPeriod = transactions[transactions.length - 1]
 
   return {
