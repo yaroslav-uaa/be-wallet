@@ -2,9 +2,9 @@ const Users = require('../repositories/users')
 const { HttpCode } = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
 const fs = require('fs/promises')
+const path = require('path')
 const EmailService = require('../services/mail-generator')
 const CreateSenderNodemailer = require('../services/email-sender')
-
 require('dotenv').config()
 
 const UploadAvatarService = require('../services/cloud-upload')
@@ -118,24 +118,17 @@ const currentUser = async (req, res, next) => {
 const verifyUser = async (req, res, next) => {
   try {
     const user = await Users.findByVerifyToken(req.params.token)
-    if (user) {
-      await Users.updateVerifyToken(user.id, true, null)
-      fs.readFile('../verifyPage/index.html', null, function (error, data) {
-        if (error) {
-          res.writeHead(404)
-          res.write('File not found!')
-        } else {
-          res.write(data)
-        }
-        res.end()
+    if (!user) {
+      return res.status(HttpCode.BAD_REQUEST).json({
+        status: 'error',
+        code: HttpCode.BAD_REQUEST,
+        message: 'Verification token isn`t valid',
       })
     }
+    await Users.updateVerifyToken(user.id, true, null)
+    res.sendFile(path.join(__dirname, '../public/index.html'))
 
-    return res.status(HttpCode.BAD_REQUEST).json({
-      status: 'error',
-      code: HttpCode.BAD_REQUEST,
-      message: 'Verification token isn`t valid',
-    })
+    //
   } catch (error) {
     next(error)
   }
