@@ -1,6 +1,7 @@
 const Users = require('../repositories/users')
 const { HttpCode } = require('../helpers/constants')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const fs = require('fs/promises')
 const path = require('path')
 const EmailService = require('../services/mail-generator')
@@ -207,58 +208,45 @@ const updateUserInfo = async (req, res, next) => {
   }
 }
 
+// helper functions
+const randomTokenString = () => {
+  return crypto.randomBytes(40).toString('hex')
+}
+
 const forgotPassword = async (req, res, next) => {
   try {
     const user = await Users.findUserByEmail(req.body.email)
-    if (user) {
-      const { email, resetToken } = user
-      if (!verified) {
-        const emailService = new EmailService(
-          process.env.NODE_ENV,
-          new CreateSenderNodemailer()
-        )
-        await emailService.sendResetPasswordEmail(resetToken, email)
-        return res.status(HttpCode.OK).json({
-          status: 'success',
-          code: HttpCode.OK,
-          message: 'Resubmitted verification',
-        })
-      }
-      return res.status(HttpCode.CONFLICT).json({
+    if (!user) {
+      res.status(HttpCode.NOT_FOUND).json({
         status: 'error',
-        code: HttpCode.CONFLICT,
-        message: 'Email has been already verified',
+        code: HttpCode.NOT_FOUND,
+        message: 'User not found',
       })
     }
-    return res.status(HttpCode.NOT_FOUND).json({
-      status: 'error',
-      code: HttpCode.NOT_FOUND,
-      message: 'User not found',
+    // create reset token that expires after 24 hours
+
+    user.resetToken = {
+      token: randomTokenString(),
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    }
+    await user.save()
+
+    const { email, resetToken } = user
+
+    const emailService = new EmailService(
+      process.env.NODE_ENV,
+      new CreateSenderNodemailer()
+    )
+    await emailService.sendResetPasswordEmail(resetToken, email)
+    return res.status(HttpCode.OK).json({
+      status: 'success',
+      code: HttpCode.OK,
+      message: 'Please check your email for password reset instructions',
     })
   } catch (error) {
     next(error)
   }
 }
-
-// const forgotPassword = async (req, res, next) => {
-//   try {
-//     const result = Users.forgotPassword(req.body)
-//     if (!result) {
-//       return res.json({
-//         status: 'error',
-//         code: HttpCode.CONFLICT,
-//         message: 'Something wrong',
-//       })
-//     }
-//     return res.json({
-//       status: 'success',
-//       code: HttpCode.OK,
-//       message: 'Please check your email for password reset instructions',
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
 
 const verifyResetToken = async (req, res, next) => {
   try {

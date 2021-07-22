@@ -22,15 +22,9 @@ router.patch('/avatars', guard, upload.single('avatar'), ctrlUser.avatars)
 router.put('/update', guard, ctrlUser.updateUserInfo)
 
 // forgot&reset password
-router.post(
-  '/forgot-password',
-  guard,
-  validateForgotPassword,
-  ctrlUser.forgotPassword
-)
+router.post('/forgot-password', validateForgotPassword, ctrlUser.forgotPassword)
 router.post(
   '/verified-reset-token',
-  guard,
   validateResetToken,
   ctrlUser.verifyResetToken
 )
