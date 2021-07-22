@@ -14,7 +14,6 @@ const addCapital = async (userId, body) => {
       balance: body.sum,
       owner: userId,
     })
-    console.log(`new ${capital}`)
     await recalculateBalance(capital.date, '0', userId, true)
   } else {
     capital = await Transaction.findOneAndReplace(
@@ -30,10 +29,20 @@ const addCapital = async (userId, body) => {
       },
       { new: true }
     )
-    console.log(`overwrite ${capital}`)
     await recalculateBalance(capital.date, '0', userId, true)
   }
   return capital
 }
 
-module.exports = { addCapital }
+const getCapital = async (userId) => {
+  const result = await Transaction.findOne({
+    owner: userId,
+    category: 'Capital',
+  }).populate({
+    path: 'owner',
+    select: '_id',
+  })
+  return result
+}
+
+module.exports = { addCapital, getCapital }

@@ -15,4 +15,18 @@ const addCapital = async (req, res, next) => {
   }
 }
 
-module.exports = { addCapital }
+const getCapital = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const capital = await Capital.getCapital(userId)
+    return res.status(201).json({
+      status: 'success',
+      code: HttpCode.CREATED,
+      capital,
+    })
+  } catch (e) {
+    next(e)
+  }
+}
+
+module.exports = { addCapital, getCapital }
