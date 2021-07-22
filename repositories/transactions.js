@@ -25,12 +25,13 @@ const addTransaction = async (userId, body) => {
     lastTransactionBalance,
     body
   )
-  const results = await Transaction.create({
+  await Transaction.create({
     owner: userId,
     ...body,
     balance: currentBalance,
   })
   await recalculateBalance(body.date, currentBalance, userId, false)
+  const results = await listTransaction(userId)
   return results
 }
 
