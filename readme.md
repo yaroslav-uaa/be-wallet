@@ -24,7 +24,7 @@ Additional description about the project and its features.
 
 ## Live Demo
 
-[Live Demo Link](https://)
+[Live Demo Link](https://be-wallet.herokuapp.com/api-docs/)
 
 ## Authors
 

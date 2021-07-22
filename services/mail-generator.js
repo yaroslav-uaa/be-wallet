@@ -58,7 +58,7 @@ class EmailService {
     console.log(result)
   }
 
-  #createTemplateResetPasswordEmail(user) {
+  #createTemplateResetPasswordEmail(resetToken) {
     // Configure mailgen
     const mailGenerator = new Mailgen({
       theme: 'salted',
@@ -78,15 +78,15 @@ class EmailService {
           button: {
             color: '#7427F3', // Optional action button color
             text: 'reset your Password',
-            link: `${this.link}/api/users/reset-password?token=${user.resetToken.token}`,
+            link: `${this.link}/api/users/reset-password?resettoken=${resetToken}`,
           },
         },
       },
     }
     return mailGenerator.generate(passwordResetEmail)
   }
-  async sendResetPasswordEmail(user, passwordResetEmail) {
-    const emailHtml = this.#createTemplateResetPasswordEmail(user)
+  async sendResetPasswordEmail(resetToken, passwordResetEmail) {
+    const emailHtml = this.#createTemplateResetPasswordEmail(resetToken)
     const msg = {
       to: passwordResetEmail,
       subject: 'Reset password for your account',
