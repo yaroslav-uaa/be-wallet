@@ -4,7 +4,7 @@
 
 > My final project from hw of React GOIT.
 
-![screenshot]()
+![screenshot]('./public/readme.png)
 
 Additional description about the project and its features.
 
@@ -21,12 +21,26 @@ Additional description about the project and its features.
   ![](https://img.shields.io/badge/cloudinary-blueviolet)
   ![](https://img.shields.io/badge/jest-blueviolet)
   ![](https://img.shields.io/badge/bcryptjs-blueviolet)
+  ![](https://img.shields.io/badge/swagger-jsdoc-blueviolet)
+  ![](https://img.shields.io/badge/swagger-ui-blueviolet)
+  ![](https://img.shields.io/badge/swagger-ui/express-blueviolet)
+  ![](https://img.shields.io/badge/passport-jwt-blueviolet)
+  ![](https://img.shields.io/badge/passport-blueviolet)
+  ![](https://img.shields.io/badge/mongodb-blueviolet)
+  ![](https://img.shields.io/badge/joi-blueviolet)
+  ![](https://img.shields.io/badge/dateformat-blueviolet)
 
 ## Live Demo
 
 [Live Demo Link](https://be-wallet.herokuapp.com/api-docs/)
 
 ## Authors
+
+<a href="https://github.com/yaroslav-uaa/be-wallet/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yaroslav-uaa/be-wallet" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
 
 ## Show your support
 

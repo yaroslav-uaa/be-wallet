@@ -208,6 +208,8 @@ const updateUserInfo = async (req, res, next) => {
   }
 }
 
+// TODO finish it after presentation
+
 // helper functions
 const randomTokenString = () => {
   return crypto.randomBytes(40).toString('hex')
