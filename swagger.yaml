@@ -1,0 +1,286 @@
+openapi: '3.0.0'
+info:
+  title: 'Wallet API'
+  version: '1.0.0'
+  description: 'A simple Express Wallet API build with MongoDB'
+
+servers:
+  - url: 'https://be-wallet.herokuapp.com'
+    description: Local development server
+
+paths:
+  /users/signup:
+    post:
+      summary: SignUp new user in to app
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: You registered successfully
+        409:
+          description: Email is already used
+        500:
+          description: System error
+  /users/signin:
+    post:
+      summary: Sign in to app
+      tags: [User]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              password: '12345678'
+              email: shelby1234@ukr.net
+      responses:
+        200:
+          description: You sign in successfully
+        401:
+          description: Invalid login or password
+  /users/signout:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Sign out from app
+      tags: [User]
+      responses:
+        204:
+          description: Successful logout
+        401:
+          description: Token is lost in header
+        500:
+          description: System error
+  /users/current:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get current user
+      tags: [User]
+      responses:
+        200:
+          description: Find your information
+        401:
+          description: Lost token in header
+        500:
+          description: System error
+  /users/verify:
+    post:
+      summary: Send email for verification
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              email: shelby1234@ukr.net
+      responses:
+        200:
+          description: Resubmitted verification
+        404:
+          description: User not found
+        409:
+          description: Email has not been verified
+  /users/verify/{verifyToken}:
+    get:
+      summary: Verify user
+      tags: [User]
+      parameters:
+        - in: path
+          name: verifyToken
+          schema:
+            type: string
+          required: true
+          description: Users verifyToken
+      responses:
+        200:
+          description: User is verified
+        400:
+          description: Verification token isn`t valid
+  /transactions:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Returns the list of all the transactions
+      tags: [Transaction]
+      responses:
+        200:
+          description: The list of the transactions
+        401:
+          description: Unauthorized
+    post:
+      security:
+        - bearerAuth: []
+      summary: Add a new transaction
+      tags: [Transaction]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        200:
+          description: The transaction was successfully created
+        401:
+          description: Unauthorized
+        500:
+          description: Some server error
+  /transactions/{transactionId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get the transaction by id
+      tags: [Transaction]
+      parameters:
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: The transaction id
+      responses:
+        200:
+          description: The transaction description by id
+        401:
+          description: Unauthorized
+        404:
+          description: The transaction was not found
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete the transaction by id
+      tags: [Transaction]
+      parameters:
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: The transaction id
+      responses:
+        200:
+          description: Transaction deleted
+        401:
+          description: Unauthorized
+        404:
+          description: The transaction was not found
+    patch:
+      security:
+        - bearerAuth: []
+      summary: update the transaction by id
+      tags: [Transaction]
+      parameters:
+        - in: path
+          name: transactionId
+          schema:
+            type: string
+          required: true
+          description: The transaction id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        200:
+          description: The transaction was updated
+        401:
+          description: Unauthorized
+        404:
+          description: The transaction was not found
+        500:
+          description: Some error happened
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - password
+        - email
+        - name
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the transaction
+        password:
+          type: string
+          description: The password of user`s account
+        email:
+          type: string
+          description: The email address
+        token:
+          type: string
+          description: The token for authorization
+        avatar:
+          type: string
+          description: The user`s avatar
+        idCloudAvatar:
+          type: string
+          description: The user`s avatarId
+        verified:
+          type: boolean
+          description: Verification value of user`s email
+        verifyToken:
+          type: string
+          description: The verified token
+        resetToken:
+          token: string
+          expires: date
+          description: The token for forgot and reset password
+      example:
+        password: '12345678'
+        email: shelby@gmail.com
+        name: Thomas
+    Transaction:
+      type: object
+      required:
+        - date
+        - income
+        - category
+        - comment
+        - sum
+      properties:
+        id:
+          type: string
+          description: The auto-generated id of the transaction
+        date:
+          type: string
+          description: The date of create transaction
+        category:
+          type: string
+          description: The category of transaction
+        income:
+          type: Boolean
+          description: Income or Outcome of transaction
+        comment:
+          type: string
+          description: The details of transaction`s category
+        sum:
+          type: number
+          description: Value of income or outcome
+        balance:
+          type: number
+          description: Sum of income or outcome values
+        owner:
+          type: id
+          description: User`s id
+      example:
+        date: 2021-04-27T12:15:23.174Z
+        income: true
+        category: Regular
+        comment: Present for wife
+        sum: 12000
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

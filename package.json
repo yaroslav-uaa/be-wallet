@@ -1,6 +1,6 @@
 {
   "name": "template",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/server.js",
@@ -9,15 +9,38 @@
     "lint:fix": "eslint --fix **/*.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.26.2",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
+    "dateformat": "^4.5.1",
+    "dotenv": "^10.0.0",
     "express": "4.17.1",
-    "morgan": "1.10.0"
+    "express-rate-limit": "^5.3.0",
+    "helmet": "^4.6.0",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mailgen": "^2.0.14",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.13.2",
+    "morgan": "1.10.0",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.6.2",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui": "^3.51.1",
+    "swagger-ui-express": "^4.1.6",
+    "util": "^0.12.4",
+    "uuid": "^8.3.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "eslint": "^7.19.0",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-json": "^3.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "nodemon": "2.0.7"
