@@ -2,7 +2,7 @@
 
 # Wallet - Node.js Rest Api with Express & MongoDB
 
-> My final project from hw of React GOIT.
+> Final project GOIT.
 
 ![screenshot](./public/readme.png)
 
