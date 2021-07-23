@@ -1,10 +1,10 @@
 ![](https://img.shields.io/badge/CatsRevenants-blueviolet)
 
-# Wallet
+# Wallet - Node.js Rest Api with Express & MongoDB
 
 > My final project from hw of React GOIT.
 
-![screenshot]('./public/readme.png)
+![screenshot](./public/readme.png)
 
 Additional description about the project and its features.
 
